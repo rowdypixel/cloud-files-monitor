@@ -36,5 +36,10 @@ namespace CloudFilesMonitor
             else
                 return (theObject.CloudPath.ToLower() == this.CloudPath.ToLower() && theObject.MD5.ToLower() == this.MD5.ToLower());
         }
+
+        public override string ToString()
+        {
+            return CloudPath;
+        }
     }
 }
