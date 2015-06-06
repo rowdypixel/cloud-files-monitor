@@ -23,23 +23,9 @@ namespace CloudFilesMonitor
 
             var filesOnServer = Provider.GetFiles(ContainerName);
 
-
             if (existing.Rows.Count == 0)
             {
-                // If there are no files in the DB yet, this must be the first time we've run the monitor
-                // , so we will add all existing files to the database
-
-                foreach (var file in filesOnServer)
-                {
-                    Dictionary<string, string> columns = new Dictionary<string, string>()
-                    {
-                        {"SiteName", this.Name},
-                        {"CloudPath", file.CloudPath},
-                        {"MD5Hash", file.MD5}
-                    };
-                    Database.Helper.CurrentHelper.Insert("cfm_files", columns);
-                }
-
+                SetCurrentAsValid(filesOnServer);
                 return new MD5Result[0];
             }
 
@@ -58,6 +44,30 @@ namespace CloudFilesMonitor
             }
 
             return changes.ToArray();
+        }
+
+        public void SetCurrentAsValid()
+        {
+            var filesOnServer = Provider.GetFiles(ContainerName);
+            SetCurrentAsValid(filesOnServer);
+        }
+        public void SetCurrentAsValid(IEnumerable<MD5Result> files)
+        {
+            // Delete any existing files.
+            Database.Helper.CurrentHelper.Delete("cfm_files", string.Format("SiteName = '{0}'", this.Name));
+
+            // Add the files back to the DB.
+            foreach (var file in files)
+            {
+                Dictionary<string, string> columns = new Dictionary<string, string>()
+                    {
+                        {"SiteName", this.Name},
+                        {"CloudPath", file.CloudPath},
+                        {"MD5Hash", file.MD5}
+                    };
+                Database.Helper.CurrentHelper.Insert("cfm_files", columns);
+            }
+
         }
 
         public ICloudProvider Provider { get; set; }
