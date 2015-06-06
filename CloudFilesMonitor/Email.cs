@@ -29,7 +29,11 @@ namespace CloudFilesMonitor
 
             try
             {
+#if DEBUG
+                Console.WriteLine("Emails don't send in debug mode.");
+#else
                 await transport.DeliverAsync(message);
+#endif
             }
             catch(Exception ex)
             {

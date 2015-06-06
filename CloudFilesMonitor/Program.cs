@@ -16,29 +16,15 @@ namespace CloudFilesMonitor
             var databasePath = System.Configuration.ConfigurationManager.AppSettings["FileTrackerDatabasePath"];
             Database.Disk.OpenFile(databasePath);
 
+            // Start the server to let users respond.
+            ResponseServer.Server.Init();
 
             // Initialize sites.
-            var sites = new Site[] 
-            {
-                new Site() 
-                {
-                    ContainerName = "SampleContainerName", 
-                    Name="SampleSite", 
-                    Provider = new CloudProviders.RackspaceCloudProvider() 
-                    {
-                        AuthDetails = new Dictionary<string,string>() 
-                        {
-                            { "APIKey", "rackspace_api_key"},
-                            { "Username", "rackspace_username"}
-
-                        }
-                    }
-                }
-            };
+            SiteManager.Load();
                         
             //Set up the timer.
             var timerCheckInterval = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["TimerCheckIntervalSeconds"]) * 1000;
-            Timer t = new Timer(Timer_Tick, sites, 0, timerCheckInterval);
+            Timer t = new Timer(Timer_Tick, SiteManager.AllSites, 0, timerCheckInterval);
 
             Console.ReadLine();
 
