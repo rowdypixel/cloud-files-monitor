@@ -79,6 +79,7 @@
     <Compile Include="CloudProviders\RackspaceCloudProvider.cs" />
     <Compile Include="Database\Disk.cs" />
     <Compile Include="Database\Helper.cs" />
+    <Compile Include="Email.cs" />
     <Compile Include="ICloudProvider.cs" />
     <Compile Include="MD5Result.cs" />
     <Compile Include="Program.cs" />

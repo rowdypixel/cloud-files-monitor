@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+
 namespace CloudFilesMonitor
 {
     class Program
@@ -53,23 +54,12 @@ namespace CloudFilesMonitor
 
                 if (changes.Count() > 0)
                 {
-
                     string body = string.Format(@"Warning - the following files have changed for your site {0}
 {1}", site.Name, string.Join(",", changes.ToList()));
 
-                    var sender = System.Configuration.ConfigurationManager.AppSettings["NotificationSenderAddress"];
-                    var recipient = System.Configuration.ConfigurationManager.AppSettings["NotificationEmailAddress"];
-                    var sendgridApiUser = System.Configuration.ConfigurationManager.AppSettings["SendgridAPIUser"];
-                    var sendgridApiKey = System.Configuration.ConfigurationManager.AppSettings["SendgridAPIKey"];
-
-                    SendGrid.SendGridMessage message = new SendGrid.SendGridMessage();
-                    message.To = new System.Net.Mail.MailAddress[] {
-                        new System.Net.Mail.MailAddress(recipient)
-                    };
-                    message.From = new System.Net.Mail.MailAddress(sender);
-                    message.Text = body;
-
-                    message.SetSendAt(DateTime.Now);
+                    Email.Send(body); 
+                    
+                    Console.WriteLine("\t !!!!!!CHANGES DETECTED!!!!!! Mail Sent !!!!!!CHANGES DETECTED!!!!!!");
                 }
             }
         }
