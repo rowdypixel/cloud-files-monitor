@@ -87,6 +87,7 @@
     <Compile Include="ResponseServer\Server.cs" />
     <Compile Include="ResponseServer\Worker.cs" />
     <Compile Include="Site.cs" />
+    <Compile Include="SiteManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

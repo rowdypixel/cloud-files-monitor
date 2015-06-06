@@ -16,9 +16,6 @@ namespace CloudFilesMonitor
             var databasePath = System.Configuration.ConfigurationManager.AppSettings["FileTrackerDatabasePath"];
             Database.Disk.OpenFile(databasePath);
 
-            // Start the server to let users respond.
-            ResponseServer.Server.Init();
-
             // Initialize sites.
             SiteManager.Load();
                         
@@ -26,8 +23,8 @@ namespace CloudFilesMonitor
             var timerCheckInterval = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["TimerCheckIntervalSeconds"]) * 1000;
             Timer t = new Timer(Timer_Tick, SiteManager.AllSites, 0, timerCheckInterval);
 
-            Console.ReadLine();
-
+            // Start the server to let users respond.
+            ResponseServer.Server.Init();
         }
 
         private static void Timer_Tick(Object o)
@@ -44,8 +41,12 @@ namespace CloudFilesMonitor
 {1}", site.Name, string.Join(",", changes.ToList()));
 
                     Email.Send(body); 
-                    
+#if DEBUG
+                    Console.WriteLine("\tEmails don't send in debug mode.");
+#else
                     Console.WriteLine("\t !!!!!!CHANGES DETECTED!!!!!! Mail Sent !!!!!!CHANGES DETECTED!!!!!!");
+
+#endif
                 }
             }
         }
