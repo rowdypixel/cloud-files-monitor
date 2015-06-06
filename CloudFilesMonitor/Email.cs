@@ -10,7 +10,7 @@ namespace CloudFilesMonitor
 {
     class Email
     {
-        public static void Send(string body)
+        public static async void Send(string body)
         {
             var sender = System.Configuration.ConfigurationManager.AppSettings["NotificationSenderAddress"];
             var recipient = System.Configuration.ConfigurationManager.AppSettings["NotificationEmailAddress"];
@@ -18,15 +18,22 @@ namespace CloudFilesMonitor
             var sendgridApiKey = System.Configuration.ConfigurationManager.AppSettings["SendgridAPIKey"];
 
             SendGrid.SendGridMessage message = new SendGrid.SendGridMessage();
-            message.To = new System.Net.Mail.MailAddress[] {
-                        new System.Net.Mail.MailAddress(recipient)
-                    };
+            message.AddTo(recipient);
+            message.Subject = string.Format("ALERT! Site Changed");
             message.From = new System.Net.Mail.MailAddress(sender);
             message.Text = body;
+            message.Html = body;
 
             var credentials = new NetworkCredential(sendgridApiUser, sendgridApiKey);
             var transport = new SendGrid.Web(credentials);
-            transport.DeliverAsync(message);
+
+            try
+            {
+                await transport.DeliverAsync(message);
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 }
