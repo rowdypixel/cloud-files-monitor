@@ -30,7 +30,8 @@ namespace CloudFilesMonitor
             try
             {
                 await transport.DeliverAsync(message);
-            }catch(Exception ex)
+            }
+            catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
