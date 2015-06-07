@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace CloudFilesMonitor
 {
@@ -12,6 +13,11 @@ namespace CloudFilesMonitor
         /// The name of this cloud provider (e.g., Amazon S3, Rackspace Cloud Files)
         /// </summary>
         string FriendlyName { get; }
+
+        /// <summary>
+        /// A code name for the cloud provider for easier serialization (e.g., AmazonS3, RackspaceCloudFiles)
+        /// </summary>
+        string CodeName { get; }
 
         /// <summary>
         /// Any authorization details needed. Username/Password, API Key, etc

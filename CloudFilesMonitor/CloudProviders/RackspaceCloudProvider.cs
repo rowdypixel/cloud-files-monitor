@@ -18,6 +18,13 @@ namespace CloudFilesMonitor.CloudProviders
             }           
         }
 
+        public string CodeName
+        {
+            get
+            {
+                return "RackspaceCloudFiles";
+            }
+        }
 
         public Dictionary<string, string> AuthDetails
         {

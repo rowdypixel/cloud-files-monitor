@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data;
+using Newtonsoft.Json;
 
 namespace CloudFilesMonitor
 {
@@ -70,6 +71,7 @@ namespace CloudFilesMonitor
 
         }
 
-        public ICloudProvider Provider { get; set; }
+        [JsonProperty(TypeNameHandling=TypeNameHandling.All)]
+       public ICloudProvider Provider { get; set; }
     }
 }

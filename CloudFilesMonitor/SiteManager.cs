@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,12 +23,17 @@ namespace CloudFilesMonitor
 
         public static void Save()
         {
-            throw new NotImplementedException();
+            var path = System.Configuration.ConfigurationManager.AppSettings["SitesConfigFile"];
+
+            System.IO.File.WriteAllText(path,
+                JsonConvert.SerializeObject(AllSites));
         }
 
         public static void Load()
         {
-            throw new NotImplementedException();
+            var path = System.Configuration.ConfigurationManager.AppSettings["SitesConfigFile"];
+            var json = System.IO.File.ReadAllText(path);
+            AllSites = JsonConvert.DeserializeObject<Site[]>(json);
         }
     }
 }
