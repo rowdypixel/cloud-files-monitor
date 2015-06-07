@@ -14,8 +14,9 @@ namespace CloudFilesMonitor.ResponseServer
 
         public static void Init()
         {
-            var host = "localhost";
-            var port = "1485";
+            var host = System.Configuration.ConfigurationManager.AppSettings["ServerHost"];
+            var port = System.Configuration.ConfigurationManager.AppSettings["ServerPort"];
+
             _http.Prefixes.Add(string.Format("http://{0}:{1}/", host, port));
             _http.Start();
 
