@@ -12,6 +12,7 @@ namespace CloudFilesMonitor
     {
         public string Name { get; set; }
         public string ContainerName { get; set; }
+        public string RestoreCommand { get; set;}
 
         /// <summary>
         /// Compares the files on the server to the existing records in the database.
@@ -45,6 +46,18 @@ namespace CloudFilesMonitor
             }
 
             return changes.ToArray();
+        }
+
+        public void Restore()
+        {
+            var startInfo = new System.Diagnostics.ProcessStartInfo(this.RestoreCommand);
+            startInfo.UseShellExecute = false;
+            startInfo.RedirectStandardOutput = true;
+            var proc = System.Diagnostics.Process.Start(startInfo);
+            while(!proc.HasExited)
+            {
+                System.Threading.Thread.Sleep(1);
+            }
         }
 
         public void SetCurrentAsValid()

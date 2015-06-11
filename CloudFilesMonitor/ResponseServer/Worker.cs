@@ -24,7 +24,7 @@ namespace CloudFilesMonitor.ResponseServer
             if (path == "/ok")
             {
                 var siteName = req.QueryString["site"];
-                var msg = string.Format("Error updating site {0}", siteName);
+                var msg = string.Format("Error approving site {0}", siteName);
 
                 var site = SiteManager.AllSites.Where(x => x.Name == siteName).FirstOrDefault();
                 if (site != null)
@@ -34,6 +34,19 @@ namespace CloudFilesMonitor.ResponseServer
                 }
 
                WriteString(msg);
+            }
+            else if(path == "/restore")
+            {
+                var siteName = req.QueryString["site"];
+                var msg = string.Format("Error restoring site {0}", siteName);
+
+                var site = SiteManager.AllSites.Where(x => x.Name == siteName).FirstOrDefault();
+                if (site != null)
+                {
+                    site.Restore();
+                    msg = string.Format("Changes to {0} have been approved. You will be notified the next time this site changes.", siteName);
+                }
+
             }
             else
             {

@@ -18,7 +18,7 @@ namespace CloudFilesMonitor
 
             // Initialize sites.
             SiteManager.Load();
-                        
+
             //Set up the timer.
             var timerCheckInterval = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["TimerCheckIntervalSeconds"]) * 1000;
             Timer t = new Timer(Timer_Tick, SiteManager.AllSites, 0, timerCheckInterval);
@@ -37,10 +37,20 @@ namespace CloudFilesMonitor
 
                 if (changes.Count() > 0)
                 {
-                    string body = string.Format(@"Warning - the following files have changed for your site {0}
-{1}", site.Name, string.Join(",", changes.ToList()));
 
-                    Email.Send(body); 
+                    var host = System.Configuration.ConfigurationManager.AppSettings["ServerHost"];
+                    var port = System.Configuration.ConfigurationManager.AppSettings["ServerPort"];
+
+                    var url = string.Format("http://{0}:{1}", host, port);
+
+                    string body = string.Format(@"Warning - the following files have changed on site {0}
+<br />
+{1}
+<br />
+<a href='{2}/?ok?site={0}'>Approve</a>
+<a href='{2}/restore?site={0}'>Restore</a>", site.Name, string.Join(",", changes.ToList()), url);
+
+                    Email.Send(body);
 #if DEBUG
                     Console.WriteLine("\tEmails don't send in debug mode.");
 #else

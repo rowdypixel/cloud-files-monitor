@@ -14,8 +14,8 @@ Configuration of the monitor is handled via `App.config`. Inside the `appSetting
 6.  `ServerHost` - This sets the host for the server which lets your mark changes as accepted. Default: `localhost`
 7. `ServerPort` - This sets the port for the server which lets your mark changes as accepted. Default: `1485`
 8. `SendgridAPIUser` - This is the SendGrid username that is used to send notification emails. Default: `test`
-9. `SendgridAPIKey` - This is the SendGrid password that is used to send notification emails. Default: `test` 
-    
+9. `SendgridAPIKey` - This is the SendGrid password that is used to send notification emails. Default: `test`
+
 
 Sites JSON file
 ===
@@ -25,6 +25,7 @@ An example JSON file can be found below:
 	  {
 	    "Name": "Your Site",
 	    "ContainerName": "YourSiteContainer",
+      "RestoreCommand" : "C:\Sites\DeploySite.bat",
 	    "Provider": {
 	      "$type": "CloudFilesMonitor.CloudProviders.RackspaceCloudProvider, CloudFilesMonitor",
 	      "FriendlyName": "Rackspace Cloud Files",
